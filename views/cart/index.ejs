@@ -1,0 +1,94 @@
+<style>
+    .product-card {
+        margin: 10px;
+        line-height: 1;
+        padding: 24px 0 30px 24px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .card-img-top {
+        width: 150px;
+    }
+</style>
+
+<div class="container">
+    <% if (items.length > 0) { %>
+    <div class="row">
+        <div class="col-9">
+            <% for(var i=0; i < items.length; i++) { %>
+            <% product = items[i].product %>
+            <div class="row product-card">
+                <div class="col-4">
+                    <img class="card-img-top" src="data:image/png;base64,<%= new Buffer(product.images[0].image).toString('base64') %>" alt="Card image cap">
+                </div>
+                <div class="col-6">
+                    <h5 class="card-title"><%= product.name %></h5>
+                    <h4><b>₹<%= items[i].qty*product.price %></b></h4>
+                    <br>
+                    <div class="row">
+                        <div class="col-8">
+                            <form action="/items/<%= items[i]._id %>" method="POST">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <select class="custom-select custom-select-md mb-3" name="qty">
+                                            <% for(var j=1; j <= product.quantity; j++) { %>
+                                                <% if (j === items[i].qty) { %>
+                                                    <option selected><%= j %></option>
+                                                <% } else { %>
+                                                    <option><%= j %></option>
+                                                <% } %>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-outline-primary">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <form action="/items/<%= items[i]._id %>/delete" method="POST">
+                                <button type="submit" class="btn btn-outline-danger">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Price Details</h5>
+                  <% let total = 0 %>
+                  <% for(var i=0; i < items.length; i++) { %>
+                    <% const product = items[i].product %>
+                    <% const amnt = items[i].qty*product.price %>
+                    <% total += amnt %>
+                    <p class="card-text">
+                        <%= items[i].qty %> X <%= product.price %> : ₹<%= amnt %>
+                    </p>
+                  <% } %>
+                  <hr>
+                  <p>
+                    <b>Total Amount</b> : <span class="text-right"><b>₹<%= total %></b></span>
+                  </p>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-6">
+            <form action="/order/<%= items[0].cart %>" method="POST">
+                <button type="submit" class="btn btn-success btn-lg btn-block">Place Order</button>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+        <div class="row  product-card">
+            <div class="col-6">
+                <h2>Your cart is empty!</h2>
+            </div>
+        </div>
+    <% } %>
+</div>

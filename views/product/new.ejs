@@ -1,0 +1,24 @@
+<style>
+    .centered-form__box {
+        width: 50%;
+        box-shadow: none;
+    }
+</style>
+<div class="centered-form">
+    <div class="centered-form__box">
+        <h1>Add new product</h1>
+        <form action="/products" method="post" enctype="multipart/form-data">
+            <label>Name <font color="red">*</font></label>
+            <input type="text" name="name" placeholder="Realme2 (Diamond Red, 32 GB)" required>
+            <div class="display-flex">
+                <input type="number" id="quantity" name="quantity" min="1" max="10" placeholder="Quantity" required>
+                <input type="number" id="price" name="price" min="0" placeholder="Price" required>
+            </div>
+            <label>Description</label>
+            <textarea id="description" name="description" rows="4" cols="70" placeholder="Add a description here..."></textarea>
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image">
+            <button type="submit">Add New</button>
+        </form>
+    </div>
+</div>

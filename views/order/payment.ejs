@@ -1,0 +1,57 @@
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+    .card {
+        margin-top: 50px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="card col-6 offset-3">
+            <img class="card-img-top" src="https://cdn.razorpay.com/logo.svg" alt="thankyou img">
+            <div class="card-body">
+              <h5 class="card-title">Payment request</h5>
+              <p class="card-text">Click on the button and pay a total amount of <b>₹<%= amount %></b> to complete your order with Estore.</p>
+              <p>Stay safe! Pay easy :)</p>
+              <p class="text-right">
+                <button type="butoon" id="paymentclick">Pay Now</button>
+              </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#paymentclick').on('click', function() {
+        const options = {
+            key: "<%= options.key %>",
+            amount: "<%= options.amount %>",
+            order_id: "<%= options.order_id %>",
+            name: "<%= options.name %>",
+            description: "<%= options.description %>",
+            image: "<%= options.image %>",
+            handler: function (resp) {
+                let payment_id = resp.razorpay_payment_id;
+                $.post('/payments/'+payment_id+'/capture', { orderId: "<%= orderId %>" }, function(result){ 
+                    // redirect here
+                    window.location.href = '/thankyou'
+                })
+            },
+            prefill: {
+                "name": "<%= options.prefill.name %>",
+                "email": "<%= options.prefill.email %>"
+            },
+            notes: {
+                "address": "<%= options.notes.address %>"
+            },
+            theme: {
+                "color": "<%= options.theme.color %>"
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        // Open Gateway
+        rzp.open();
+    })
+</script>
