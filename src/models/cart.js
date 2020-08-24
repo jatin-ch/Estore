@@ -8,8 +8,28 @@ const cartSchema = new mongoose.Schema({
         ref: 'User'
     },
     items: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item'
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        },
+        qty: {
+            type: Number,
+            required: true,
+            validate(value) {
+                if (value <= 0) {
+                    throw new Error('quantity must be greter then zero')
+                }
+            }
+        },
+        price: {
+            type: Number,
+            require: true,
+            validate(value) {
+                if (value < 0) {
+                    throw new Error('price must be a positive number')
+                }
+            }
+        }
     }]
 }, {
     timestamps: true

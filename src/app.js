@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const expressLayouts = require('express-ejs-layouts')
 const passport = require('passport')
 const session = require('express-session')
-const flash = require('express-flash')
+//const flash = require('express-flash')
+const flash = require('connect-flash')
 
 require('./db/mongoose')
 require('./middleware/passport')
@@ -34,15 +35,16 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/auth', authRouter)
+app.use(function(req, res, next){
+  if (req.user) {
+    res.locals.user = { name: req.user.name, email: req.user.email }
+  }
+  next()
+})
 app.use(userRouter)
 app.use(productRouter)
 app.use(cartRouter)
 app.use(itemRouter)
 app.use(orderRouter)
-
-app.use(function(req, res, next){
-  res.locals.user = req.user
-  next()
-})
 
 module.exports = app

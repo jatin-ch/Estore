@@ -8,9 +8,28 @@ const orderSchema = new mongoose.Schema({
         ref: 'User'
     },
     items: [{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Item'
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        },
+        qty: {
+            type: Number,
+            required: true,
+            validate(value) {
+                if (value <= 0) {
+                    throw new Error('quantity must be greter then zero')
+                }
+            }
+        },
+        price: {
+            type: Number,
+            required: true,
+            validate(value) {
+                if (value < 0) {
+                    throw new Error('price must be non negative')
+                }
+            }
+        }
     }],
     amount: {
         type: Number,

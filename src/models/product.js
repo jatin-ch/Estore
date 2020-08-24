@@ -2,6 +2,12 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const productSchema = new mongoose.Schema({
+    category: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: true
+    },
     name: {
         type: String,
         trim: true,
@@ -30,6 +36,13 @@ const productSchema = new mongoose.Schema({
         trim: true,
         minlength: 10,
     },
+    specifications: {
+        type: Map,
+        of: [{
+            type: String,
+            trim: true
+        }]
+    },
     images: [{
         image: {
             type: Buffer
@@ -37,6 +50,14 @@ const productSchema = new mongoose.Schema({
     }]
 }, {
     timestamps: true
+})
+
+productSchema.pre('save', async function(next) {
+    const product = this
+    if(product.isModified('category')) {
+        product.category = product.category.replace(/ /g, '-')
+    }
+    next()
 })
 
 const Product = mongoose.model('Product', productSchema)

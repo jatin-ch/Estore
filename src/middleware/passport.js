@@ -23,7 +23,6 @@ passport.use('local-login', new LocalStrategy({
           return done(null, false, { message: 'Incorrect email.' })
         }
         if (!user.comparePassword(password)) {
-          console.log('Incorrect password')
           return done(null, false, { message: 'Incorrect password.' })
         }
         return done(null, user)

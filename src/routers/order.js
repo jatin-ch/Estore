@@ -4,7 +4,6 @@ const Cart = require('../models/cart')
 const Product = require('../models/product')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
-const Item = require('../models/item')
 const Order = require('../models/order')
 
 const router = express.Router()
@@ -25,19 +24,17 @@ router.post('/order/:id', auth.loginRequired, async (req, res) => {
             return res.redirect('/')
         }
 
-        const order = new Order({ user: req.user._id })
-        order.items = cart.items
-        cart.items = []
         let amount = 0
-        const results = await Item.find({ cart: cart._id }).populate('product')
-        results.forEach(async (item) => {
-            item.cart = undefined
-            item.order = order._id
-            item.amount = item.qty*item.product.price
-            amount += item.amount
-            await item.save()
-        })
+        const data = await cart.populate('items.product').execPopulate()
+        for(var i=0; i < data.items.length; i++) {
+            data.items[i].price = data.items[i].product.price
+            amount += data.items[i].qty * data.items[i].price
+        }
+
+        const order = new Order({ user: req.user._id })
+        order.items = data.items
         order.amount = amount
+        cart.items = []
         await order.save()
         await cart.save()
         res.redirect('/payment?orderId='+order._id)

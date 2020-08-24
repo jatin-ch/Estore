@@ -25,28 +25,29 @@
                     <h4><b>₹<%= items[i].qty*product.price %></b></h4>
                     <br>
                     <div class="row">
-                        <div class="col-8">
-                            <form action="/items/<%= items[i]._id %>" method="POST">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <select class="custom-select custom-select-md mb-3" name="qty">
-                                            <% for(var j=1; j <= product.quantity; j++) { %>
-                                                <% if (j === items[i].qty) { %>
-                                                    <option selected><%= j %></option>
-                                                <% } else { %>
-                                                    <option><%= j %></option>
-                                                <% } %>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="submit" class="btn btn-outline-primary">Update</button>
-                                    </div>
+                        <div class="col-6">
+                            <div class="form-row">
+                                <div class="col">
+                                    <% if (items[i].qty > 1) { %>
+                                    <form action="/cart/<%= items[i]._id %>/down" method="POST">
+                                        <button type="submit" class="btn btn-outline-primary">-</button>
+                                    </form>
+                                    <% } else { %>
+                                        <button type="button" class="btn btn-outline-primary" disabled>-</button>
+                                    <% } %>
                                 </div>
-                            </form>
+                                <div class="col">
+                                    <button type="button" class="btn btn-outline-dark" disabled><%= items[i].qty %></button>
+                                </div>
+                                <div class="col">
+                                    <form action="/cart/<%= items[i]._id %>/up" method="POST">
+                                        <button type="submit" class="btn btn-outline-primary">+</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-4">
-                            <form action="/items/<%= items[i]._id %>/delete" method="POST">
+                        <div class="col-6">
+                            <form action="/cart/<%= items[i]._id %>/delete" method="POST">
                                 <button type="submit" class="btn btn-outline-danger">Remove</button>
                             </form>
                         </div>
@@ -79,7 +80,7 @@
     <div class="row">
         <div class="col-6"></div>
         <div class="col-6">
-            <form action="/order/<%= items[0].cart %>" method="POST">
+            <form action="/order/<%= cartId %>" method="POST">
                 <button type="submit" class="btn btn-success btn-lg btn-block">Place Order</button>
             </form>
         </div>

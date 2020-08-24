@@ -1,0 +1,62 @@
+<style>
+    .product-card {
+        margin: 10px;
+        line-height: 1;
+        padding: 24px 0 30px 24px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .product-card img {
+        width: 250px;
+    }
+    .img-card {
+        padding: .75rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row product-card">
+        <div class="col-4">
+            <div class="img-card">
+                <img class="card-img-top" src="data:image/png;base64,<%= new Buffer(product.images[0].image).toString('base64') %>" alt="Card image cap">
+                <br><br>
+                <div class="row">
+                    <div class="col-6">
+                        <a href="#" class="btn btn-block btn-lg btn-outline-warning"><%= product.quantity %> In stock</a>
+                    </div>
+                    <div class="col-6">
+                        <% if (items.includes(product._id)) { %>
+                            <a href="/cart" class="btn btn-block btn-lg btn-primary">Go to cart</a>
+                        <% } else { %>
+                            <form action="/cart" method="POST">
+                                <input type="hidden" name="pid" value="<%= product.id %>">
+                                <button type="submit" class="btn btn-block btn-lg btn-outline-primary">Add to cart</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <h5 class="card-title"><%= product.name %></h5>
+            <h4><b>₹<%= product.price %></b></h4>
+            <p class="card-text"><%= product.description %></p>
+
+            <table class="table table-bordered">
+                <tbody>
+                  <tr><th style="background-color: #f8f9fa;"><h4>Specifications</h4></th></tr>
+                  <% for (const val of product.specifications.keys()) { %>
+                  <tr>
+                    <td>
+                        <h5><%= val %></h5>
+                        <% for(var i=0; i < product.specifications.get(val).length; i++) { %>
+                            <li><%= product.specifications.get(val)[i] %></li>
+                            <br>
+                        <% } %>
+                    </td>
+                  </tr>
+                  <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

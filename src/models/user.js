@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
+userSchema.virtual('cart', {
+    ref: 'Cart',
+    localField: '_id',
+    foreignField:'user'
+})
 
 userSchema.methods.comparePassword = function(password){
     return bcrypt.compareSync(password, this.password)

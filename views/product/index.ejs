@@ -5,6 +5,17 @@
         padding: 24px 0 30px 24px;
         border-bottom: 1px solid #f0f0f0;
     }
+    .product-card img {
+        width: 200px;
+        height: 200px;
+    }
+    .product-card a {
+        text-decoration: none;
+        color: black;
+    }
+    .product-card a:hover {
+        color: #2874f0;
+    }
 </style>
 
 <div class="container">
@@ -14,31 +25,23 @@
             <img class="card-img-top" src="data:image/png;base64,<%= new Buffer(products[i].images[0].image).toString('base64') %>" alt="Card image cap">
         </div>
         <div class="col-6">
-            <h5 class="card-title"><%= products[i].name %></h5>
+            <a href="view_item/<%= products[i].id %>" target="_blank">
+                <h5 class="card-title"><%= products[i].name %></h5>
+            </a>
             <p class="card-text"><%= products[i].description %></p>
+
+            <% if (products[i].specifications && products[i].specifications.keys().length > 0) { %>
+                <% for (const val of products[i].specifications.keys()) { %>
+                    <h4><%= val %></h4>
+                    <% for(var j=0; j < products[i].specifications.get(val).length; j++) { %>
+                        <li><%= products[i].specifications.get(val)[j] %></li>
+                        <br>
+                    <% } %>
+                <% } %>
+            <% } %>
         </div>
         <div class="col-2">
             <h4><b>₹<%= products[i].price %></b></h4>
-            <br>
-            <form action="/cart" method="POST">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="hidden" name="item" value="<%= products[i].id %>">
-                        <select class="custom-select custom-select-md mb-3" name="qty">
-                            <% for(var j=1; j <= products[i].quantity; j++) { %>
-                                <option><%= j %></option>
-                            <% } %>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <% if (items.includes(products[i]._id)) { %>
-                            <a href="/cart" class="btn btn-primary">Go to cart</a>
-                        <% } else { %>
-                            <button type="submit" class="btn btn-outline-primary">Add to cart</button>
-                        <% } %>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
     <% } %>

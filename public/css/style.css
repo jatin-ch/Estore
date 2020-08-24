@@ -18,6 +18,8 @@ body {
     line-height: 1.4;
     color: #333333;
     font-family: Helvetica, Arial, sans-serif;
+    line-height: 1.42857143;
+    font-size: 14px;
 }
 
 h1 {
@@ -25,8 +27,13 @@ h1 {
 }
 
 p {
-    margin-top: 12px;
+    line-height: 20px;
+    font-weight: 400;
+    color: rgba(0,0,0,.7);
+    font-family: 'Helvetica Neue', sans-serif;
     font-size: 14px;
+    margin: 0 0 24px;
+    text-align: justify;
 }
 
 label {
@@ -40,6 +47,14 @@ input {
     border: 1px solid #eeeeee;
     padding: 12px;
     outline: none;
+}
+
+select {
+    font-size: 14px;
+    border: 1px solid #eeeeee;
+    padding: 12px;
+    outline: none;
+    width: 100%;
 }
 
 textarea {
@@ -97,6 +112,37 @@ button:disabled {
 .centered-form input {
     margin-bottom: 16px;
     width: 100%;
+}
+
+/* Product Page Layout */
+
+.product-form {
+    /* height: 100vh;    */
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.product-form button {
+    width: 100%;
+}
+
+.product-form input {
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+/* New product form */
+.btn-sbmit {
+    width: 25%;
+    position: fixed;
+    top: 92%;
+    right: 10%;
+}
+.jumbotron {
+    padding: 10px;
+    height: 21vh;
+    overflow-y: scroll;
 }
 
 /* Chat Page Layout */

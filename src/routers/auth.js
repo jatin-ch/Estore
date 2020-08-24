@@ -6,7 +6,7 @@ const User = require('../models/user')
 
 // https://github.com/kharbanda14/youtube-tutorials/blob/master/node.js/authentication/passport-local-example
 router.get('/login', (req, res) => {
-    res.render('auth/login')
+    res.render('auth/login', { messages: req.flash('info') })
 })
 
 router.get('/signup', (req, res) => {
@@ -33,7 +33,8 @@ router.post('/signup', async (req, res, next) => {
 
 router.post('/login', passport.authenticate('local-login', { 
     successRedirect: '/',
-    failureRedirect: '/auth/login'
+    failureRedirect: '/auth/login',
+    failureFlash: true
 }))
 
 router.get('/logout', (req, res, next) => {
